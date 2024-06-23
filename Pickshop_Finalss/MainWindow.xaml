@@ -1,0 +1,229 @@
+﻿<Window x:Class="Pickshop_Finalss.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Pickshop_Finalss"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" >
+
+
+    <Grid  >
+
+        <StackPanel x:Name="login" Visibility="Visible">
+            <StackPanel.Background>
+                <ImageBrush ImageSource="C:\Users\Kyle\Source\Repos\TrueFinalsTerm\TrueFinalsTerm\Background\Login.png"/>
+            </StackPanel.Background>
+
+            <TextBox x:Name ="user_box" Margin="0 210 20 0" BorderBrush="Transparent" Background="Transparent" Width="190" Height="23" BorderThickness="0"  />
+            <TextBox x:Name ="pass_box" Margin="0 36 20 0" BorderBrush="Transparent" Background="Transparent" Width="190" Height="23" BorderThickness="0"  />
+            <Button x:Name="SignIn" Content=" " Margin="0,14,20,0" BorderBrush="Transparent" Background="Transparent" Width="200" Height="23" Click="SignIn_click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+
+        <Grid x:Name="listedItems" Visibility="Collapsed">
+            <Grid.Background>
+                <ImageBrush ImageSource="C:\Users\Kyle\Source\Repos\TrueFinalsTerm\TrueFinalsTerm\Background\Shopping.png"/>
+            </Grid.Background>
+
+            <StackPanel Margin="0 85 102 0" Width="670" Height="320" >
+                <ScrollViewer Grid.Row="1" Margin="0 0 0 0" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="320" Width="670"  >
+                    <ItemsControl Grid.Row="1" Margin="0 20 0 0" ItemsSource="{Binding ProductViewModels}"  >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Width="200" Margin="0 0 10 10"  Padding="10" BorderBrush="white" BorderThickness="1"  Height="200" >
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border CornerRadius="3" Background="White" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+
+                                    </Button.Template>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <Image Grid.Row="0" Source="{Binding ImagePath}" Width="180" Height="100" Stretch="UniformToFill" Margin="0 0 0 10"/>
+                                        <StackPanel Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Bottom" Background="#AAFFFFFF">
+                                            <TextBlock FontSize="14" TextWrapping="Wrap" Text="{Binding Name}" HorizontalAlignment="Center"/>
+                                            <TextBlock FontSize="12" Margin="0 5 0 0" TextWrapping="Wrap" Text="{Binding Description}" HorizontalAlignment="Center"/>
+                                            <TextBlock FontSize="14" FontWeight="Bold" Margin="0 5 0 0" Text="{Binding Price, StringFormat='₱{0:N2}'}" HorizontalAlignment="Center"/>
+                                        </StackPanel>
+
+                                    </Grid>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </ScrollViewer>
+
+            </StackPanel>
+            <StackPanel Margin="700 25 0 0" Width="60" Height="300" Orientation="Vertical" >
+                <Button Margin="0 5 10 0" BorderBrush="Transparent" Background="Transparent" Width="50" Height="50" Click="Shopping_Click" >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0 30 10 0" BorderBrush="Transparent" Background="Transparent" Width="45" Height="50" Click="Selling_Click"  >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="42" Height="35" Click="Contact_Click"  >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="50" Height="40" Click="Logout_Click"  >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+
+        </Grid>
+
+        <StackPanel x:Name="SellingItems" Visibility="Collapsed" Orientation="Horizontal" >
+            <StackPanel.Background>
+                <ImageBrush ImageSource="C:\Users\Kyle\Source\Repos\TrueFinalsTerm\TrueFinalsTerm\Background\Selling.png"/>
+            </StackPanel.Background>
+
+            <StackPanel Margin="20 81 0 0" Orientation="Vertical" Width="240" Height="315"  >
+                <StackPanel Orientation="Horizontal" Margin="10 50 0 0" Width="180" Height="25" >
+                    <Button x:Name="itemPhoto" Height="25" Width="75" Click="itemPhoto_Click" >
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Height="25" Width="75" >
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+
+                <TextBox x:Name="itemName" Margin="0 30 23 0" Width="148" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" />
+
+                <TextBox x:Name="itemDesc" Margin="0 30 23 0" Width="148" Height="90" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" TextWrapping="Wrap" />
+
+                <TextBox x:Name="itemPrice" Margin="0 26 23 0" Width="148" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" />
+
+            </StackPanel>
+
+            <StackPanel Margin="24 24 0 0" Height="245" Width="400" Orientation="Vertical"  >
+                <ComboBox x:Name="itemCateg" Margin="0 22 28 0" Width="235" Height="30" >
+                    <ComboBoxItem Content="Electronics"/>
+                    <ComboBoxItem Content="Fashion"/>
+                    <ComboBoxItem Content="Home &amp; Garden"/>
+                    <ComboBoxItem Content="Health &amp; Beauty"/>
+                    <ComboBoxItem Content="Sports &amp; Outdoors"/>
+                    <ComboBoxItem Content="Toys &amp; Hobbies"/>
+                    <ComboBoxItem Content="Automotive"/>
+                    <ComboBoxItem Content="Books &amp; Media"/>
+                </ComboBox>
+
+                <Button x:Name="itemSell" Margin="0 131 8 0" Width="280" Height="55" Click="itemSell_Click" >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+            </StackPanel>
+
+            <StackPanel Margin="35 30 0 0" Width="60" Height="300" >
+                <Button Margin="0 5 10 0" BorderBrush="Transparent" Background="Transparent" Width="50" Height="50" Click="Shopping_Click" >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0 30 10 0" BorderBrush="Transparent" Background="Transparent" Width="45" Height="50" Click="Selling_Click"  >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="42" Height="35" Click="Contact_Click"  >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="50" Height="40" Click="Logout_Click"  >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </StackPanel>
+
+        </StackPanel>
+
+        <Grid x:Name="Camera" Loaded="Grid_Loaded" Visibility="Collapsed" >
+            <Button x:Name="btnStart" Content="Start" HorizontalAlignment="Left" Margin="21,389,0,0" VerticalAlignment="Top" Click="btnStart_Click"/>
+            <Image x:Name="pic" HorizontalAlignment="Left" Height="345" Margin="10,41,0,0" VerticalAlignment="Top" Width="472"/>
+            <Label Content="Camera" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+            <ComboBox x:Name="cmbCamera" Text="Start" HorizontalAlignment="Left" Margin="65,12,0,0" VerticalAlignment="Top" Width="420"/>
+            <Button x:Name="btnCaptureImage" Content="Capture" HorizontalAlignment="Left" Margin="65,389,0,0" VerticalAlignment="Top" Click="btnCaptureImage_Click"/>
+        </Grid>
+
+
+    </Grid>
+
+</Window>

@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PickShopDB" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-O12V36B;Initial Catalog=PickShopDB;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="Pickshop_Finalss.Properties.Settings" SettingsPropertyName="PickShopDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.[_User]" Member="_Users">
+    <Type Name="_User">
+      <Column Name="User_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="User_Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="User_Pass" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="User_Email" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="User_Num" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Role_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="ImagePath_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="UStatus_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="_User_Product" Member="Products" ThisKey="User_ID" OtherKey="User_ID" Type="Product" />
+      <Association Name="_User_Report" Member="Reports" ThisKey="User_ID" OtherKey="User_ID" Type="Report" />
+      <Association Name="ImagePath__User" Member="ImagePath" ThisKey="ImagePath_ID" OtherKey="ImagePath_ID" Type="ImagePath" IsForeignKey="true" />
+      <Association Name="Role__User" Member="Role" ThisKey="Role_ID" OtherKey="Role_ID" Type="Role" IsForeignKey="true" />
+      <Association Name="UserStatu__User" Member="UserStatu" ThisKey="UStatus_ID" OtherKey="UStatus_ID" Type="UserStatu" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Availability" Member="Availabilities">
+    <Type Name="Availability">
+      <Column Name="Avail_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Avail_Desc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Availability_Product" Member="Products" ThisKey="Avail_ID" OtherKey="Avail_ID" Type="Product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ImagePath" Member="ImagePaths">
+    <Type Name="ImagePath">
+      <Column Name="ImagePath_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ImagePath_Desc" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Association Name="ImagePath__User" Member="_Users" ThisKey="ImagePath_ID" OtherKey="ImagePath_ID" Type="_User" />
+      <Association Name="ImagePath_Product" Member="Products" ThisKey="ImagePath_ID" OtherKey="ImagePath_ID" Type="Product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Product" Member="Products">
+    <Type Name="Product">
+      <Column Name="Product_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Product_Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Product_Quantity" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Product_Desc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="User_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="PType_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Avail_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="ImagePath_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Price" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Association Name="Availability_Product" Member="Availability" ThisKey="Avail_ID" OtherKey="Avail_ID" Type="Availability" IsForeignKey="true" />
+      <Association Name="ImagePath_Product" Member="ImagePath" ThisKey="ImagePath_ID" OtherKey="ImagePath_ID" Type="ImagePath" IsForeignKey="true" />
+      <Association Name="_User_Product" Member="_User" ThisKey="User_ID" OtherKey="User_ID" Type="_User" IsForeignKey="true" />
+      <Association Name="ProductType_Product" Member="ProductType" ThisKey="PType_ID" OtherKey="PType_ID" Type="ProductType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ProductType" Member="ProductTypes">
+    <Type Name="ProductType">
+      <Column Name="PType_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PType_Desc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="ProductType_Product" Member="Products" ThisKey="PType_ID" OtherKey="PType_ID" Type="Product" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Report" Member="Reports">
+    <Type Name="Report">
+      <Column Name="Report_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="User_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="RType_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="RStatus" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="Report_Staff" Member="Staffs" ThisKey="Report_ID" OtherKey="Report_ID" Type="Staff" />
+      <Association Name="_User_Report" Member="_User" ThisKey="User_ID" OtherKey="User_ID" Type="_User" IsForeignKey="true" />
+      <Association Name="ReportStatu_Report" Member="ReportStatu" ThisKey="RStatus" OtherKey="RStatus_ID" Type="ReportStatu" IsForeignKey="true" />
+      <Association Name="ReportType_Report" Member="ReportType" ThisKey="RType_ID" OtherKey="RType_ID" Type="ReportType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReportStatu" Member="ReportStatus">
+    <Type Name="ReportStatu">
+      <Column Name="RStatus_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RStatus_Desc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="ReportStatu_Report" Member="Reports" ThisKey="RStatus_ID" OtherKey="RStatus" Type="Report" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ReportType" Member="ReportTypes">
+    <Type Name="ReportType">
+      <Column Name="RType_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RType_Desc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="ReportType_Report" Member="Reports" ThisKey="RType_ID" OtherKey="RType_ID" Type="Report" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Role" Member="Roles">
+    <Type Name="Role">
+      <Column Name="Role_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Role_Name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Role__User" Member="_Users" ThisKey="Role_ID" OtherKey="Role_ID" Type="_User" />
+      <Association Name="Role_Staff" Member="Staffs" ThisKey="Role_ID" OtherKey="Role_ID" Type="Staff" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Staff" Member="Staffs">
+    <Type Name="Staff">
+      <Column Name="Staff_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Staff_Name" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Staff_Pass" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Staff_Email" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Staff_Num" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Role_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Report_ID" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="Report_Staff" Member="Report" ThisKey="Report_ID" OtherKey="Report_ID" Type="Report" IsForeignKey="true" />
+      <Association Name="Role_Staff" Member="Role" ThisKey="Role_ID" OtherKey="Role_ID" Type="Role" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserStatu" Member="UserStatus">
+    <Type Name="UserStatu">
+      <Column Name="UStatus_ID" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UStatus_Desc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="UserStatu__User" Member="_Users" ThisKey="UStatus_ID" OtherKey="UStatus_ID" Type="_User" />
+    </Type>
+  </Table>
+</Database>
