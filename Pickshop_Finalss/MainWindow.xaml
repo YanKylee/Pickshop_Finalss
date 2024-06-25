@@ -10,7 +10,7 @@
 
     <Grid  >
 
-        <StackPanel x:Name="login" Visibility="Visible">
+        <StackPanel x:Name="login" Visibility="Collapsed">
             <StackPanel.Background>
                 <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\Login.png"/>
             </StackPanel.Background>
@@ -417,6 +417,12 @@
             
 
         </Grid>
+
+        <Grid>
+            
+        </Grid>
+        
+        
         
         
 

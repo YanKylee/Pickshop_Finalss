@@ -13,15 +13,17 @@ namespace Pickshop_Finalss
         public string Name { get; }
         public string Description { get; }
         public double Price { get; }
+        public string Userid { get; }
 
 
-        public ProductViewModel(/*string imagePath,*/string category, string name, string description, double price)
+        public ProductViewModel(/*string imagePath,*/string category, string name, string description, double price, string userid)
         {
             //ImagePath = imagePath;
             Category = category;
             Name = name;
             Description = description;
             Price = price;
+            Userid = userid;
         }
     }
 }

@@ -40,6 +40,7 @@ namespace Pickshop_Finalss
         bool flag = false;
         bool mode = false; //false = user | true = moderator
         string user = "";
+        string userid = "";
 
         private readonly ObservableCollection<ProductViewModel> _productViewModels;
         public IEnumerable<ProductViewModel> ProductViewModels => _productViewModels;
@@ -75,6 +76,9 @@ namespace Pickshop_Finalss
         {
             _productViewModels.Clear();
             LoadProductsFromDatabase();
+            itemName.Clear();
+            itemDesc.Clear();
+            itemPrice.Clear();
             profile.Visibility = Visibility.Collapsed;
             SellingItems.Visibility = Visibility.Collapsed;
             listedItems.Visibility = Visibility.Visible;
@@ -90,6 +94,8 @@ namespace Pickshop_Finalss
 
         private void Profile_Click(object sender, RoutedEventArgs e)
         {
+            _productViewModels.Clear();
+            LoadProductsByUserFromDatabase(userid);
             var userQuery = from s in _dbConn._Users
                             where s.User_Name.Trim() == user
                             select s;
@@ -147,6 +153,7 @@ namespace Pickshop_Finalss
                             login.Visibility = Visibility.Collapsed;
                             listedItems.Visibility = Visibility.Visible;
                             user = s.User_Name;
+                            userid = s.User_ID;
                             _productViewModels.Clear();
                             LoadProductsFromDatabase();
                             break;
@@ -230,7 +237,31 @@ namespace Pickshop_Finalss
                 foreach (Product product in selectResults)
                 {
 
-                    var productViewModel = new ProductViewModel(product.PType_ID, product.Product_Name, product.Product_Desc, Convert.ToDouble(product.Price));
+                    var productViewModel = new ProductViewModel(product.PType_ID, product.Product_Name, product.Product_Desc, Convert.ToDouble(product.Price), product.User_ID);
+                    _productViewModels.Add(productViewModel);
+                }
+            }
+        }
+
+        private void LoadProductsByUserFromDatabase(string userId)
+        {
+            
+
+            IQueryable<Product> selectResults = from s in _dbConn.Products
+                                                where s.User_ID == userId
+                                                select s;
+
+            if (selectResults.Any())
+            {
+                foreach (Product product in selectResults)
+                {
+                    var productViewModel = new ProductViewModel(
+                        product.PType_ID,
+                        product.Product_Name,
+                        product.Product_Desc,
+                        Convert.ToDouble(product.Price),
+                        product.User_ID
+                    );
                     _productViewModels.Add(productViewModel);
                 }
             }
@@ -327,11 +358,58 @@ namespace Pickshop_Finalss
                 itemCategInfo.Text = item.Category;
                 itemDescInfo.Text = item.Description;
                 itemPriceInfo.Text = item.Price.ToString("C",nfi);
-               
+                var userQuery = from u in _dbConn._Users
+                                where u.User_ID == item.Userid
+                                select u;
+
+                var user = userQuery.FirstOrDefault();
+
+                // Display the user's name and email
+                    sellerInfo.Text = user.User_Name;
+                    sellerContactInfo.Text = user.User_Email;
+                
+
+
                 listedItems.Visibility = Visibility.Collapsed;
                 itemInfo.Visibility = Visibility.Visible;
             }
         }
+
+        private void ButtonPart2_Click(object sender, RoutedEventArgs e)
+        {
+
+            Button button = sender as Button;
+            ProductViewModel item = button.DataContext as ProductViewModel;
+
+
+            if (item != null)
+            {
+                NumberFormatInfo nfi = new NumberFormatInfo();
+                nfi.CurrencySymbol = "₱";
+                itemNameInfo.Text = item.Name;
+                itemCategInfo.Text = item.Category;
+                itemDescInfo.Text = item.Description;
+                itemPriceInfo.Text = item.Price.ToString("C", nfi);
+                var userQuery = from u in _dbConn._Users
+                                where u.User_ID == item.Userid
+                                select u;
+
+                var user = userQuery.FirstOrDefault();
+
+                // Display the user's name and email
+                sellerInfo.Text = user.User_Name;
+                sellerContactInfo.Text = user.User_Email;
+
+
+
+                listedItems.Visibility = Visibility.Collapsed;
+                itemInfo.Visibility = Visibility.Visible;
+            }
+        }
+
+
+
+
 
         private void backButton1_Click(object sender, RoutedEventArgs e)
         {
@@ -341,6 +419,8 @@ namespace Pickshop_Finalss
             itemCategInfo.Text = "";
             itemDescInfo.Text = "";
             itemPriceInfo.Text = "";
+            sellerInfo.Text = "";
+            sellerContactInfo.Text = "";
         }
 
         private void signupper(object sender, RoutedEventArgs e)
