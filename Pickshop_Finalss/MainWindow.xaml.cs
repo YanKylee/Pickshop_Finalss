@@ -21,6 +21,7 @@ using System.IO;
 using System.Drawing;
 using Pickshop_Finalss;
 using System.Windows.Media.Media3D;
+using System.Globalization;
 
 
 
@@ -38,31 +39,24 @@ namespace Pickshop_Finalss
         DataClasses1DataContext _dbConn = null;
         bool flag = false;
         bool mode = false; //false = user | true = moderator
+        string user = "";
 
         private readonly ObservableCollection<ProductViewModel> _productViewModels;
         public IEnumerable<ProductViewModel> ProductViewModels => _productViewModels;
+        NumberFormatInfo nfi = new NumberFormatInfo();
         public MainWindow()
         {
             InitializeComponent();
             _dbConn = new DataClasses1DataContext(Properties.Settings.Default.PickShopDBConnectionString);
 
-            _productViewModels = new ObservableCollection<ProductViewModel>()
-            {
-                //new ProductViewModel(@"C:\Users\Kyle\source\repos\TrueFinalsTerm\TrueFinalsTerm\Background\image.png","Tshirt", "Gucci replica", 100.00),
-                //new ProductViewModel(@"C:\Users\Kyle\source\repos\TrueFinalsTerm\TrueFinalsTerm\Background\Tesla.png","Honda Civic", "120,000km", 10000000.00),
-                //new ProductViewModel(@"C:\Users\Kyle\source\repos\TrueFinalsTerm\TrueFinalsTerm\Background\image.png","Alpha", "I dunno", 100.00),
-                //new ProductViewModel(@"C:\Users\Kyle\source\repos\TrueFinalsTerm\TrueFinalsTerm\Background\gigachadd.png","Torotot", "Bruh", 3000.00),
-                //new ProductViewModel(@"C:\Users\Kyle\source\repos\TrueFinalsTerm\TrueFinalsTerm\Background\image.png","Omega", "Test", 100.00),
-                //new ProductViewModel(@"C:\Users\Kyle\source\repos\TrueFinalsTerm\TrueFinalsTerm\Background\image.png", "Adult Item", "The d", 3000.00),
-                //new ProductViewModel(@"C:\Users\Kyle\source\repos\TrueFinalsTerm\TrueFinalsTerm\Background\image.png","Iphone 12 pro", "Used", 300.00)
+            _productViewModels = new ObservableCollection<ProductViewModel>();
 
-            };
-            //_productViewModels.Add(new ProductViewModel {Name = "kwkw"});
+            _productViewModels.Clear();
+            LoadProductsFromDatabase();
 
             DataContext = this;
-            //this.WindowState = WindowState.Maximized;
-            //this.WindowStyle = WindowStyle.None;
-            //this.ResizeMode = ResizeMode.NoResize;
+           
+            
 
 
         }
@@ -71,21 +65,35 @@ namespace Pickshop_Finalss
         {
             _productViewModels.Clear();
             LoadProductsFromDatabase();
-
+            profile.Visibility = Visibility.Collapsed;
             SellingItems.Visibility = Visibility.Collapsed;
             listedItems.Visibility = Visibility.Visible;
         }
 
         private void Selling_Click(object sender, RoutedEventArgs e)
         {
+            profile.Visibility = Visibility.Collapsed;
             listedItems.Visibility = Visibility.Collapsed;
             SellingItems.Visibility = Visibility.Visible;
 
         }
 
-        private void Contact_Click(object sender, RoutedEventArgs e)
+        private void Profile_Click(object sender, RoutedEventArgs e)
         {
+            var userQuery = from s in _dbConn._Users
+                            where s.User_Name.Trim() == user
+                            select s;
 
+            var userProfile = userQuery.FirstOrDefault();
+            if (userProfile != null)
+            {
+                profileUser.Text = userProfile.User_Name;
+                emailUser.Text = userProfile.User_Num;
+                numberUser.Text = userProfile.User_Email;
+                profile.Visibility = Visibility.Visible;
+                listedItems.Visibility = Visibility.Collapsed;
+                SellingItems.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void Logout_Click(object sender, RoutedEventArgs e)
@@ -124,6 +132,7 @@ namespace Pickshop_Finalss
                                 listedItems.Visibility = Visibility.Visible;
                                 messageString = s.User_Name + "\n" + s.User_Num + "\n" + s.User_Email + "\n" + s.User_ID;
                                 MessageBox.Show(messageString);
+                                user = s.User_Name;
                                 _productViewModels.Clear();
                                 LoadProductsFromDatabase();
                                 break;
@@ -287,6 +296,36 @@ namespace Pickshop_Finalss
         {
             SellingItems.Visibility = Visibility.Collapsed;
             Camera.Visibility = Visibility.Visible;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+            Button button = sender as Button;
+            ProductViewModel item = button.DataContext as ProductViewModel;
+
+            
+            if (item != null)
+            {
+                NumberFormatInfo nfi = new NumberFormatInfo();
+                nfi.CurrencySymbol = "₱";
+                itemNameInfo.Text = item.Name;
+                itemCategInfo.Text = item.Category;
+                itemDescInfo.Text = item.Description;
+                itemPriceInfo.Text = item.Price.ToString("C",nfi);
+                listedItems.Visibility = Visibility.Collapsed;
+                itemInfo.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void backButton1_Click(object sender, RoutedEventArgs e)
+        {
+            itemInfo.Visibility = Visibility.Collapsed;
+            listedItems.Visibility = Visibility.Visible;
+            itemNameInfo.Text = "";
+            itemCategInfo.Text = "";
+            itemDescInfo.Text = "";
+            itemPriceInfo.Text = "";
         }
     }
 }

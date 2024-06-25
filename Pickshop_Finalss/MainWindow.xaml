@@ -12,7 +12,7 @@
 
         <StackPanel x:Name="login" Visibility="Visible">
             <StackPanel.Background>
-                <ImageBrush ImageSource="C:\Users\Kyle\Source\Repos\TrueFinalsTerm\TrueFinalsTerm\Background\Login.png"/>
+                <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\Login.png"/>
             </StackPanel.Background>
 
             <TextBox x:Name ="user_box" Margin="0 210 20 0" BorderBrush="Transparent" Background="Transparent" Width="190" Height="23" BorderThickness="0"  />
@@ -30,15 +30,15 @@
 
         <Grid x:Name="listedItems" Visibility="Collapsed">
             <Grid.Background>
-                <ImageBrush ImageSource="C:\Users\Kyle\Source\Repos\TrueFinalsTerm\TrueFinalsTerm\Background\Shopping.png"/>
+                <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\Shopping.png"/>
             </Grid.Background>
 
             <StackPanel Margin="0 85 102 0" Width="670" Height="320" >
                 <ScrollViewer Grid.Row="1" Margin="0 0 0 0" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="320" Width="670"  >
-                    <ItemsControl Grid.Row="1" Margin="0 20 0 0" ItemsSource="{Binding ProductViewModels}"  >
+                    <ItemsControl x:Name="itemInformation" Grid.Row="1" Margin="0 20 0 0" ItemsSource="{Binding ProductViewModels}"  >
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Button Width="200" Margin="0 0 10 10"  Padding="10" BorderBrush="white" BorderThickness="1"  Height="200" >
+                                <Button Width="200" Margin="0 0 10 10"  Padding="10" BorderBrush="white" BorderThickness="1"  Height="200" Click="Button_Click" >
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Border CornerRadius="3" Background="White" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
@@ -93,7 +93,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="42" Height="35" Click="Contact_Click"  >
+                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="42" Height="35" Click="Profile_Click"  >
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
@@ -115,9 +115,41 @@
 
         </Grid>
 
+        <Grid x:Name="itemInfo" Visibility="Collapsed" >
+            <Grid.Background>
+                <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\Information.png"/>
+            </Grid.Background>
+
+            <StackPanel Margin="0 0 0 0" Orientation="Horizontal" >
+                <Button Name="backButton1" Margin="10 0 0 360" Width="50" Height="50" Background="Transparent" BorderThickness="0" BorderBrush="Transparent" Click="backButton1_Click" >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <StackPanel Margin="0 0 0 0" Width="250" Height="400" Orientation="Vertical" >
+                    <TextBlock x:Name="itemNameInfo" Margin="0 162 50 0" Width="140" TextAlignment="Left"  />
+                    <TextBlock x:Name="itemCategInfo" Margin="0 5 50 0" Width="140" TextAlignment="Left"  />
+                    <TextBlock x:Name="itemDescInfo" Margin="0 33 51 0" Width="140" Height="85" TextAlignment="Left"  TextWrapping="Wrap" />
+                    <TextBlock x:Name="itemPriceInfo" Margin="0 28 52 0" Width="140" TextAlignment="Left"  />
+                </StackPanel>
+                <StackPanel Margin="18 0 0 100" Width="250" Height="300" Orientation="Vertical" >
+                    <TextBlock x:Name="sellerInfo" Margin="0 185 60 0" Width="140" TextAlignment="Left"  />
+                    <TextBlock x:Name="sellerContactInfo" Margin="0 30 60 0" Width="140" TextAlignment="Left"/>
+                </StackPanel>
+            </StackPanel>
+
+           
+            
+
+        </Grid>
+
         <StackPanel x:Name="SellingItems" Visibility="Collapsed" Orientation="Horizontal" >
             <StackPanel.Background>
-                <ImageBrush ImageSource="C:\Users\Kyle\Source\Repos\TrueFinalsTerm\TrueFinalsTerm\Background\Selling.png"/>
+                <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\Selling.png"/>
             </StackPanel.Background>
 
             <StackPanel Margin="20 81 0 0" Orientation="Vertical" Width="240" Height="315"  >
@@ -193,7 +225,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="42" Height="35" Click="Contact_Click"  >
+                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="42" Height="35" Click="Profile_Click"  >
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
@@ -221,6 +253,115 @@
             <Label Content="Camera" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
             <ComboBox x:Name="cmbCamera" Text="Start" HorizontalAlignment="Left" Margin="65,12,0,0" VerticalAlignment="Top" Width="420"/>
             <Button x:Name="btnCaptureImage" Content="Capture" HorizontalAlignment="Left" Margin="65,389,0,0" VerticalAlignment="Top" Click="btnCaptureImage_Click"/>
+        </Grid>
+
+        <Grid x:Name="profile" Visibility="Collapsed" >
+            <Grid.Background>
+                <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\Profile.png"/>
+            </Grid.Background>
+            <StackPanel Orientation="Horizontal" >
+                <StackPanel Margin="0 0 0 0" Orientation="Vertical" Width="700" >
+                <StackPanel Width="720" Orientation="Vertical"  >
+                
+                <StackPanel Margin="0 0 100 0"  Orientation="Horizontal" Width="700" >
+                    <Border Margin="40 30 0 0" Width="150" Height="150" BorderThickness="3" BorderBrush="White" >
+                        
+                    </Border>
+                    <StackPanel>
+                        <TextBlock x:Name="profileUser" Margin="30 60 0 0" Height="27" Width="400" Text="Name:" Foreground="White" FontWeight="Black" FontFamily="verdana"  />
+                        <TextBlock x:Name="emailUser" Margin="30 0 0 0" Height="27" Width="400" Text="Email:" Foreground="White" FontWeight="Black" FontFamily="verdana"  />
+                        <TextBlock x:Name="numberUser" Margin="30 0 0 0" Height="27" Width="400" Text="Contact Number:" Foreground="White" FontWeight="Black" FontFamily="verdana"  />
+                    </StackPanel>
+                    
+                    
+                </StackPanel>
+                <TextBlock Margin="40 10 0 0" Text="Listed Items:" FontSize="20" FontWeight="Black" FontFamily="verdana" Foreground="White" />
+                <StackPanel Margin="5 0 102 0" Width="720" Height="200" >
+                    <ScrollViewer Grid.Row="1" Margin="0 0 0 0" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="200" Width="720"   >
+                        <ItemsControl x:Name="sellerItem" Grid.Row="1" Margin="20 10 0 0" ItemsSource="{Binding ProductViewModels}"  >
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Width="190" Margin="0 0 10 10"  Padding="10" BorderBrush="white" BorderThickness="1"  Height="190" Click="Button_Click" >
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border CornerRadius="3" Background="White" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+
+                                        </Button.Template>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Image Grid.Row="0" Source="{Binding ImagePath}" Width="180" Height="100" Stretch="UniformToFill" Margin="0 0 0 10"/>
+                                            <StackPanel Grid.Row="1" Grid.RowSpan="3" VerticalAlignment="Bottom" Background="#AAFFFFFF">
+                                                <TextBlock FontSize="14" TextWrapping="Wrap" Text="{Binding Name}" HorizontalAlignment="Center"/>
+                                                <TextBlock FontSize="12" Margin="0 5 0 0" TextWrapping="Wrap" Text="{Binding Description}" HorizontalAlignment="Center"/>
+                                                <TextBlock FontSize="14" FontWeight="Bold" Margin="0 5 0 0" Text="{Binding Price, StringFormat='₱{0:N2}'}" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+
+                                        </Grid>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </StackPanel>
+            </StackPanel>
+            </StackPanel>
+                <StackPanel Margin="20 0 0 0" >
+
+                    <Button Margin="0 80 0 0" BorderBrush="Transparent" Background="Transparent" Width="45" Height="50" Click="Shopping_Click"  >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="42" Height="40" Click="Selling_Click"  >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="60" Height="44" Click="Profile_Click"  >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                    <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="60" Height="44" Click="Logout_Click"  >
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+
+
+            
+
         </Grid>
 
 
