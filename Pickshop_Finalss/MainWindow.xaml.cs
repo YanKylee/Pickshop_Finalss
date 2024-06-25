@@ -47,6 +47,16 @@ namespace Pickshop_Finalss
         public MainWindow()
         {
             InitializeComponent();
+            try
+            {
+                _dbConn = new DataClasses1DataContext(Properties.Settings.Default.PickShopDBConnectionString);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Server is under maintenance!");
+                Application.Current.Shutdown();
+            }
+
             _dbConn = new DataClasses1DataContext(Properties.Settings.Default.PickShopDBConnectionString);
 
             _productViewModels = new ObservableCollection<ProductViewModel>();
@@ -98,77 +108,81 @@ namespace Pickshop_Finalss
 
         private void Logout_Click(object sender, RoutedEventArgs e)
         {
-
+            if (MessageBox.Show("Are you sure you want to logout?", "Confirmation", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                listedItems.Visibility = Visibility.Collapsed;
+                SellingItems.Visibility = Visibility.Collapsed;
+                profile.Visibility = Visibility.Collapsed;
+                login.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                // Do not close the window  
+            }
         }
 
         private void SignIn_click(object sender, RoutedEventArgs e)
         {
-            if (user_box.Text.Length > 0 && pass_box.Text.Length > 0)
+            if (string.IsNullOrWhiteSpace(user_box.Text) || string.IsNullOrWhiteSpace(pass_box.Text))
+            {
+                MessageBox.Show("Please enter both username and password.");
+                return;
+            }
+
+            try
             {
                 flag = false;
                 string messageString = "";
                 IQueryable<_User> selectResults = from s in _dbConn._Users
-                                                  where s.User_Name.Trim() == user_box.Text
+                                                  where s.User_Name == user_box.Text
                                                   select s;
                 if (selectResults.Count() == 1)
                 {
-                    //MessageBox.Show("works");
                     foreach (_User s in selectResults)
                     {
                         if (s.User_Pass.Trim() == pass_box.Text)
                         {
-                            if (s.User_ID.Trim() == "U_1")
-                            {
-                                mode = false;
-                            }
-                            else if (s.User_ID.Trim() == "U_2")
-                            {
-                                mode = true;
-                            }
+                            mode = s.User_ID.Trim() == "U_2";
 
-                            if (!mode)
-                            {
-                                login.Visibility = Visibility.Collapsed;
-                                listedItems.Visibility = Visibility.Visible;
-                                messageString = s.User_Name + "\n" + s.User_Num + "\n" + s.User_Email + "\n" + s.User_ID;
-                                MessageBox.Show(messageString);
-                                user = s.User_Name;
-                                _productViewModels.Clear();
-                                LoadProductsFromDatabase();
-                                break;
-                            }
-                            else
-                            {
-
-                                login.Visibility = Visibility.Collapsed;
-                                listedItems.Visibility = Visibility.Visible;
-                                messageString = s.User_Name + "\n" + s.User_Num + "\n" + s.User_Email + "\n" + s.User_ID;
-                                MessageBox.Show(messageString);
-                                _productViewModels.Clear();
-                                LoadProductsFromDatabase();
-                                break;
-                            }
-
+                            login.Visibility = Visibility.Collapsed;
+                            listedItems.Visibility = Visibility.Visible;
+                            user = s.User_Name;
+                            _productViewModels.Clear();
+                            LoadProductsFromDatabase();
+                            break;
                         }
-                        else if (s.User_Pass.Trim() != pass_box.Text)
+                        else
                         {
-                            messageString = "Incorrect Password.\n" +
-                                "Try again!";
+                            messageString = "Incorrect Password. Try again!";
                             MessageBox.Show(messageString);
                         }
                     }
-
-
                 }
+                else
+                {
+                    MessageBox.Show("User not found.");
+                }
+
+                user_box.Text = "";
+                pass_box.Text = "";
             }
-
-
-
-            //MessageBox.Show(user_box.Text + " " + pass_box.Text);
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Database error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occurred: {ex.Message}");
+            }
         }
 
         private void itemSell_Click(object sender, RoutedEventArgs e)
         {
+            var userQuery = from s in _dbConn._Users
+                            where s.User_Name.Trim() == user
+                            select s;
+
+            var userProfile = userQuery.FirstOrDefault();
             Product nProduct = new Product();
 
             nProduct.Product_ID = GenerateitemID(GetitemID());
@@ -177,7 +191,7 @@ namespace Pickshop_Finalss
             nProduct.Product_Desc = itemDesc.Text;
             nProduct.Product_Quantity = "0";
             nProduct.Price = float.Parse(itemPrice.Text);
-
+            nProduct.User_ID = userProfile.User_ID;
             _dbConn.Products.InsertOnSubmit(nProduct);
             _dbConn.SubmitChanges();
 
@@ -313,6 +327,7 @@ namespace Pickshop_Finalss
                 itemCategInfo.Text = item.Category;
                 itemDescInfo.Text = item.Description;
                 itemPriceInfo.Text = item.Price.ToString("C",nfi);
+               
                 listedItems.Visibility = Visibility.Collapsed;
                 itemInfo.Visibility = Visibility.Visible;
             }
@@ -327,6 +342,67 @@ namespace Pickshop_Finalss
             itemDescInfo.Text = "";
             itemPriceInfo.Text = "";
         }
+
+        private void signupper(object sender, RoutedEventArgs e)
+        {
+            string username = "";
+            string userpass = "";
+            string useremail = "";
+            string usernum = "";
+
+            int usercount = 0;
+            int productpricecount = 0;
+
+            username = su_name.Text;
+            userpass = su_pass.Text;
+            useremail = su_email.Text;
+            usernum = su_num.Text;
+
+            IQueryable<_User> selectResults = from s in _dbConn._Users
+                                              orderby s.User_ID
+                                              select s;
+
+
+            foreach (_User s in selectResults)
+            {
+                usercount++;
+            }
+
+            _User newUser = new _User();
+            if (su_name.Text != "" && su_pass.Text != "" && su_email.Text != "" && su_num.Text != "")
+            {
+                newUser.User_ID = "U_" + (usercount + 1).ToString();
+                newUser.User_Name = su_name.Text;
+                newUser.User_Pass = su_pass.Text;
+                newUser.User_Email = su_email.Text;
+                newUser.User_Num = su_num.Text;
+                _dbConn._Users.InsertOnSubmit(newUser);
+                _dbConn.SubmitChanges();
+                MessageBox.Show("Successfully registered!");
+                signup.Visibility = Visibility.Collapsed;
+                login.Visibility = Visibility.Visible;
+
+                su_name.Text = "";
+                su_pass.Text = "";
+                su_email.Text = "";
+                su_num.Text = "";
+            }
+            else
+                MessageBox.Show("Please enter Correct data in all Text Boxes provided");
+
+        }
+
+        private void tosignup(object sender, RoutedEventArgs e)
+        {
+            login.Visibility = Visibility.Collapsed;
+            signup.Visibility = Visibility.Visible;
+        }
+
+        private void tester(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("omg its working!");
+        }
+
     }
 }
 

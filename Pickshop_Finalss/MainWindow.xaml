@@ -26,7 +26,61 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
+            <Button x:Name="signupu" Content=" " Margin="0,14,20,0" BorderBrush="Transparent" Background="Transparent" Width="200" Height="23" Click="tosignup">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </StackPanel>
+
+        <Grid x:Name="signup" Visibility="Collapsed">
+
+            <Grid.Background>
+                <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\Signup.png"/>
+            </Grid.Background>
+
+            <TextBox x:Name="su_name" Margin="315,113,0,0" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" TextWrapping="Wrap" Text="" HorizontalAlignment="Left" Width="148" Height="21" VerticalAlignment="Top"/>
+            <TextBox x:Name="su_email" Margin="315,157,0,0" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" TextWrapping="Wrap" Text="" Height="21" VerticalAlignment="Top" HorizontalAlignment="Left" Width="148"/>
+            <TextBox x:Name="su_num" Margin="315,0,0,0" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" TextWrapping="Wrap" Text="" Height="21" VerticalAlignment="Center" HorizontalAlignment="Left" Width="147"/>
+            <TextBox x:Name="su_pass" Margin="315,238,0,0" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" TextWrapping="Wrap" Text="" Height="21" VerticalAlignment="Top" HorizontalAlignment="Left" Width="148"/>
+
+            <Button x:Name="signupbtn" Content="" BorderBrush="Transparent" Background="Transparent" HorizontalAlignment="Left" Height="45" Margin="320,276,0,0" VerticalAlignment="Top" Width="119" Click="signupper">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+
+            <Button  Content="" BorderBrush="Transparent" Background="Transparent" HorizontalAlignment="Left" Height="21" Margin="314,67,0,0" VerticalAlignment="Top" Width="72" Click="tester" >
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button  Content="" BorderBrush="Transparent" Background="Transparent" HorizontalAlignment="Left" Height="21" Margin="395,68,0,0" VerticalAlignment="Top" Width="67">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="20" Margin="393,71,0,0" VerticalAlignment="Top" Width="1"/>
+
+        </Grid>
 
         <Grid x:Name="listedItems" Visibility="Collapsed">
             <Grid.Background>
@@ -363,6 +417,8 @@
             
 
         </Grid>
+        
+        
 
 
     </Grid>
