@@ -386,24 +386,18 @@ namespace Pickshop_Finalss
             {
                 NumberFormatInfo nfi = new NumberFormatInfo();
                 nfi.CurrencySymbol = "₱";
-                itemNameInfo.Text = item.Name;
-                itemCategInfo.Text = item.Category;
-                itemDescInfo.Text = item.Description;
-                itemPriceInfo.Text = item.Price.ToString("C", nfi);
-                var userQuery = from u in _dbConn._Users
-                                where u.User_ID == item.Userid
-                                select u;
-
-                var user = userQuery.FirstOrDefault();
-
-                // Display the user's name and email
-                sellerInfo.Text = user.User_Name;
-                sellerContactInfo.Text = user.User_Email;
+                EditItemName.Text = item.Name;
+                EditItemCateg.Text = item.Category;
+                EditItemDesc.Text = item.Description;
+                EditItemPrice.Text = item.Price.ToString("C", nfi);
+                
 
 
 
                 listedItems.Visibility = Visibility.Collapsed;
-                itemInfo.Visibility = Visibility.Visible;
+                profile.Visibility = Visibility.Collapsed;
+                itemInfo.Visibility = Visibility.Collapsed;
+                EditItem.Visibility = Visibility.Visible;
             }
         }
 
@@ -481,6 +475,84 @@ namespace Pickshop_Finalss
         private void tester(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("omg its working!");
+        }
+
+        private void DeleteItem_CLick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("omg its working!");
+        }
+
+        private void EditItem_CLick(object sender, RoutedEventArgs e)
+        {
+
+                NumberFormatInfo nfi = new NumberFormatInfo();
+                nfi.CurrencySymbol = "₱";
+                acceptName.Text = EditItemName.Text;
+                acceptCateg.Text = EditItemCateg.Text;
+                acceptDesc.Text = EditItemDesc.Text;
+                acceptPrice.Text = EditItemPrice.Text;
+       
+            EditItem.Visibility = Visibility.Collapsed;
+            AcceptEdit.Visibility = Visibility.Visible;
+
+        }
+
+        private void AcceptEdit_CLick(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Find the product in the database
+                var productQuery = from p in _dbConn.Products
+                                   where p.Product_Name == acceptName.Text
+                                   select p;
+
+                var productToUpdate = productQuery.FirstOrDefault();
+
+                if (productToUpdate != null)
+                {
+                    // Update product details
+                    productToUpdate.Product_Name = acceptName.Text;
+                    productToUpdate.PType_ID = acceptCateg.Text;
+                    productToUpdate.Product_Desc = acceptDesc.Text;
+                    productToUpdate.Price = float.Parse(acceptPrice.Text, NumberStyles.Currency, CultureInfo.InvariantCulture);
+
+                    // Submit changes to the database
+                    _dbConn.SubmitChanges();
+                    MessageBox.Show("Product updated successfully!");
+
+                    // Refresh the product list
+                    _productViewModels.Clear();
+                    LoadProductsFromDatabase();
+
+                    AcceptEdit.Visibility = Visibility.Collapsed;
+                    listedItems.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    MessageBox.Show("Product not found.");
+                }
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Database error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occurred: {ex.Message}");
+            }
+        }
+
+        private void DeclineEdit_CLick(object sender, RoutedEventArgs e)
+        { 
+            MessageBox.Show("omg its working!");
+        }
+
+        private void EditBack_CLick(object sender, RoutedEventArgs e)
+        {
+            listedItems.Visibility = Visibility.Collapsed;
+            itemInfo.Visibility = Visibility.Collapsed;
+            EditItem.Visibility = Visibility.Collapsed;
+            profile.Visibility = Visibility.Visible;
         }
 
     }

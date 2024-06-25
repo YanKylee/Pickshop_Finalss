@@ -10,7 +10,7 @@
 
     <Grid  >
 
-        <StackPanel x:Name="login" Visibility="Collapsed">
+        <StackPanel x:Name="login" Visibility="Visible">
             <StackPanel.Background>
                 <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\Login.png"/>
             </StackPanel.Background>
@@ -335,7 +335,7 @@
                         <ItemsControl x:Name="sellerItem" Grid.Row="1" Margin="20 10 0 0" ItemsSource="{Binding ProductViewModels}"  >
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <Button Width="190" Margin="0 0 10 10"  Padding="10" BorderBrush="white" BorderThickness="1"  Height="190" Click="Button_Click" >
+                                    <Button Width="190" Margin="0 0 10 10"  Padding="10" BorderBrush="white" BorderThickness="1"  Height="190" Click="ButtonPart2_Click" >
                                         <Button.Template>
                                             <ControlTemplate TargetType="Button">
                                                 <Border CornerRadius="3" Background="White" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
@@ -418,13 +418,111 @@
 
         </Grid>
 
-        <Grid>
-            
+        <Grid x:Name="EditItem" Visibility="Collapsed" >
+            <Grid.Background>
+                <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\EditItem.png"/>
+            </Grid.Background>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="10 0 0 350" Width="55" Height="55" BorderThickness="0" BorderBrush="Transparent" Click="EditBack_CLick" >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <StackPanel Margin="203 0 0 0" Width="200"  >
+                    <Border Margin="20 53 0 0" Width="120" Height="100" BorderThickness="1" Background="White" >
+                        
+                    </Border>
+
+                    <TextBlock x:Name="EditItemName" Margin="10 20 0 0" Text="2020" Width="145"  />
+                    <TextBlock x:Name="EditItemCateg" Margin="10 5 0 0" Text="2020" Width="145"  />
+                    <TextBlock x:Name="EditItemDesc" Margin="10 32 0 0" Text="2020" Width="145"  />
+                    <TextBlock x:Name="EditItemPrice" Margin="10 98 0 0" Text="2020" Width="145"  />
+                </StackPanel>
+                <StackPanel Margin="25 0 0 0" Width="60"  >
+                    <Button Margin="0 4 20 0" Width="40" Height="40" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="DeleteItem_CLick" >
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Margin="0 4 20 0" Width="40" Height="40" BorderBrush="Transparent" BorderThickness="0" Click="EditItem_CLick" >
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                </StackPanel>
+            </StackPanel>
+
         </Grid>
-        
-        
-        
-        
+
+
+        <Grid x:Name="AcceptEdit" Visibility="Collapsed" >
+            <Grid.Background>
+                <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\AcceptEdit.png"/>
+            </Grid.Background>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Margin="10 0 0 350" Width="55" Height="55" BorderThickness="0" BorderBrush="Transparent" >
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <StackPanel Margin="203 0 0 0" Width="200"  >
+                    <Border Margin="20 53 0 0" Width="120" Height="100" BorderThickness="1" Background="White" >
+
+                    </Border>
+
+                    <TextBox x:Name="acceptName" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="4 20 0 0"  Width="145"  />
+                    <TextBox x:Name="acceptCateg" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="4 5 0 0"  Width="145"  />
+                    <TextBox x:Name="acceptDesc" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="4 32 0 0"  Width="145" TextWrapping="Wrap" />
+                    <TextBox x:Name="acceptPrice" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="4 98 0 0"  Width="145"  />
+                </StackPanel>
+                <StackPanel Margin="25 0 0 0" Width="60"  >
+                    <Button Margin="0 4 20 0" Width="40" Height="40" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="DeclineEdit_CLick" >
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button Margin="0 4 20 0" Width="40" Height="40" BorderBrush="Transparent" BorderThickness="0" Click="AcceptEdit_CLick" >
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                </StackPanel>
+            </StackPanel>
+
+        </Grid>
+
+
+
+
+
 
 
     </Grid>
