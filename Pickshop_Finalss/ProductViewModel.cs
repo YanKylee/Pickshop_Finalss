@@ -9,6 +9,7 @@ namespace Pickshop_Finalss
     public class ProductViewModel
     {
         //public string ImagePath { get; }
+        public string Itemid { get; }
         public string Category { get; }
         public string Name { get; }
         public string Description { get; }
@@ -16,9 +17,10 @@ namespace Pickshop_Finalss
         public string Userid { get; }
 
 
-        public ProductViewModel(/*string imagePath,*/string category, string name, string description, double price, string userid)
+        public ProductViewModel(/*string imagePath,*/string itemid ,string category, string name, string description, double price, string userid)
         {
             //ImagePath = imagePath;
+            Itemid = itemid;
             Category = category;
             Name = name;
             Description = description;

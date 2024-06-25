@@ -41,6 +41,9 @@ namespace Pickshop_Finalss
         bool mode = false; //false = user | true = moderator
         string user = "";
         string userid = "";
+        private ProductViewModel activeItem;
+        private string selectedCateg = string.Empty;
+        private string selectedAcceptCateg = string.Empty;
 
         private readonly ObservableCollection<ProductViewModel> _productViewModels;
         public IEnumerable<ProductViewModel> ProductViewModels => _productViewModels;
@@ -77,6 +80,7 @@ namespace Pickshop_Finalss
             _productViewModels.Clear();
             LoadProductsFromDatabase();
             itemName.Clear();
+            itemCateg.Text = string.Empty;
             itemDesc.Clear();
             itemPrice.Clear();
             profile.Visibility = Visibility.Collapsed;
@@ -185,23 +189,49 @@ namespace Pickshop_Finalss
 
         private void itemSell_Click(object sender, RoutedEventArgs e)
         {
-            var userQuery = from s in _dbConn._Users
-                            where s.User_Name.Trim() == user
-                            select s;
+            if (selectedCateg != string.Empty)
+            {
+                MessageBox.Show($"Successfully Added!");
+                var userQuery = from s in _dbConn._Users
+                                where s.User_Name.Trim() == user
+                                select s;
 
-            var userProfile = userQuery.FirstOrDefault();
-            Product nProduct = new Product();
+                var userProfile = userQuery.FirstOrDefault();
+                Product nProduct = new Product();
 
-            nProduct.Product_ID = GenerateitemID(GetitemID());
-            nProduct.PType_ID = "PT_1";
-            nProduct.Product_Name = itemName.Text;
-            nProduct.Product_Desc = itemDesc.Text;
-            nProduct.Product_Quantity = "0";
-            nProduct.Price = float.Parse(itemPrice.Text);
-            nProduct.User_ID = userProfile.User_ID;
-            _dbConn.Products.InsertOnSubmit(nProduct);
-            _dbConn.SubmitChanges();
+                nProduct.Product_ID = GenerateitemID(GetitemID());
+                nProduct.PType_ID = selectedCateg;
+                nProduct.Product_Name = itemName.Text;
+                nProduct.Product_Desc = itemDesc.Text;
+                nProduct.Product_Quantity = "0";
+                nProduct.Price = float.Parse(itemPrice.Text);
+                nProduct.User_ID = userProfile.User_ID;
+                _dbConn.Products.InsertOnSubmit(nProduct);
+                _dbConn.SubmitChanges();
+                selectedCateg = string.Empty;
+                itemName.Text = string.Empty;
+                itemDesc.Text = string.Empty;
+                itemPrice.Text = string.Empty;
+                itemCateg.Text = string.Empty;
+                return;
+            }
+            MessageBox.Show($"Select product category");
+        }
 
+        private void itemCateg_SelectionChange(object sender, SelectionChangedEventArgs e)
+        {
+            if (itemCateg.SelectedItem is ComboBoxItem selectedItem)
+            {
+                selectedCateg = selectedItem.Tag.ToString();
+            }
+        }
+
+        private void acceptCateg_SelectionChange(object sender, SelectionChangedEventArgs e)
+        {
+            if (acceptCateg.SelectedItem is ComboBoxItem selectedItem)
+            {
+                selectedAcceptCateg = selectedItem.Tag.ToString();
+            }
         }
 
         private string GenerateitemID(string highestID)
@@ -237,7 +267,7 @@ namespace Pickshop_Finalss
                 foreach (Product product in selectResults)
                 {
 
-                    var productViewModel = new ProductViewModel(product.PType_ID, product.Product_Name, product.Product_Desc, Convert.ToDouble(product.Price), product.User_ID);
+                    var productViewModel = new ProductViewModel(product.Product_ID, product.PType_ID, product.Product_Name, product.Product_Desc, Convert.ToDouble(product.Price), product.User_ID);
                     _productViewModels.Add(productViewModel);
                 }
             }
@@ -256,6 +286,7 @@ namespace Pickshop_Finalss
                 foreach (Product product in selectResults)
                 {
                     var productViewModel = new ProductViewModel(
+                        product.Product_ID,
                         product.PType_ID,
                         product.Product_Name,
                         product.Product_Desc,
@@ -355,7 +386,7 @@ namespace Pickshop_Finalss
                 NumberFormatInfo nfi = new NumberFormatInfo();
                 nfi.CurrencySymbol = "₱";
                 itemNameInfo.Text = item.Name;
-                itemCategInfo.Text = item.Category;
+                itemCategInfo.Text = getCategDesc(item.Category);
                 itemDescInfo.Text = item.Description;
                 itemPriceInfo.Text = item.Price.ToString("C",nfi);
                 var userQuery = from u in _dbConn._Users
@@ -379,27 +410,91 @@ namespace Pickshop_Finalss
         {
 
             Button button = sender as Button;
-            ProductViewModel item = button.DataContext as ProductViewModel;
+            activeItem = button.DataContext as ProductViewModel;
 
 
-            if (item != null)
+            if (activeItem != null)
             {
                 NumberFormatInfo nfi = new NumberFormatInfo();
                 nfi.CurrencySymbol = "₱";
-                EditItemName.Text = item.Name;
-                EditItemCateg.Text = item.Category;
-                EditItemDesc.Text = item.Description;
-                EditItemPrice.Text = item.Price.ToString("C", nfi);
-                
-
-
+                EditItemName.Text = activeItem.Name;
+                EditItemCateg.Text = getCategDesc(activeItem.Category);
+                selectedAcceptCateg = activeItem.Category;
+                EditItemDesc.Text = activeItem.Description;
+                EditItemPrice.Text = activeItem.Price.ToString("C", nfi);
 
                 listedItems.Visibility = Visibility.Collapsed;
                 profile.Visibility = Visibility.Collapsed;
-                itemInfo.Visibility = Visibility.Collapsed;
                 EditItem.Visibility = Visibility.Visible;
+
             }
         }
+
+        private string getCategDesc(string categId)
+        {
+            switch (categId)
+            {
+                case "PT_1":
+                    return "Electronics";
+
+                case "PT_2":
+                    return "Fashion";
+
+                case "PT_3":
+                    return "Home & Garden";
+
+                case "PT_4":
+                    return "Health & Beauty";
+
+                case "PT_5":
+                    return "Sports & Outdoors";
+
+                case "PT_6":
+                    return "Toys & Hobbies";
+
+                case "PT_7":
+                    return "Automotive" ;
+
+                case "PT_8":
+                    return "Books & Media" ;
+            }
+
+            return null;
+        }
+
+        private string getCategId(string categDesc)
+        {
+            switch (categDesc)
+            {
+                case "Electronics":
+                    return "PT_1";
+
+                case "Fashion":
+                    return "PT_2";
+
+                case "Home & Garden":
+                    return "PT_3";
+
+                case "Health & Beauty":
+                    return "PT_4";
+
+                case "Sports & Outdoors":
+                    return "PT_5";
+
+                case "Toys & Hobbies":
+                    return "PT_6";
+
+                case "Automotive":
+                    return "PT_7";
+
+                case "Books & Media":
+                    return "PT_8";
+            }
+
+            return null;
+        }
+
+
 
 
 
@@ -479,7 +574,63 @@ namespace Pickshop_Finalss
 
         private void DeleteItem_CLick(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("omg its working!");
+            if (activeItem == null)
+            {
+                MessageBox.Show("No item selected to delete.");
+                return;
+            }
+
+            // Show a confirmation dialog
+            MessageBoxResult result = MessageBox.Show(
+                $"Are you sure you want to delete the item '{activeItem.Name}'?",
+                "Confirm Deletion",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning
+            );
+
+            // If the user clicked 'Yes', proceed with deletion
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    // Find the product in the database using the activeItem ID
+                    var productQuery = from p in _dbConn.Products
+                                       where p.Product_ID == activeItem.Itemid
+                                       select p;
+
+                    var productToDelete = productQuery.FirstOrDefault();
+
+                    if (productToDelete != null)
+                    {
+                        // Delete the product
+                        _dbConn.Products.DeleteOnSubmit(productToDelete);
+
+                        // Submit changes to the database
+                        _dbConn.SubmitChanges();
+                        MessageBox.Show("Product deleted successfully!");
+
+                        // Refresh the product list
+                        _productViewModels.Clear();
+                        LoadProductsByUserFromDatabase(userid);
+
+                        // Update UI visibility
+                        EditItem.Visibility = Visibility.Collapsed;
+                        profile.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Product not found.");
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show($"Database error: {ex.Message}");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An unexpected error occurred: {ex.Message}");
+                }
+            }
         }
 
         private void EditItem_CLick(object sender, RoutedEventArgs e)
@@ -488,10 +639,21 @@ namespace Pickshop_Finalss
                 NumberFormatInfo nfi = new NumberFormatInfo();
                 nfi.CurrencySymbol = "₱";
                 acceptName.Text = EditItemName.Text;
-                acceptCateg.Text = EditItemCateg.Text;
+                //acceptCateg.Text = EditItemCateg.Text;
+                
                 acceptDesc.Text = EditItemDesc.Text;
                 acceptPrice.Text = EditItemPrice.Text;
-       
+
+            foreach (ComboBoxItem item in acceptCateg.Items)
+            {
+                if (item.Tag != null && item.Tag.ToString() == selectedAcceptCateg)
+                {
+                    acceptCateg.SelectedItem = item;
+                    selectedAcceptCateg = item.Tag.ToString();
+                    break;
+                }
+            }
+
             EditItem.Visibility = Visibility.Collapsed;
             AcceptEdit.Visibility = Visibility.Visible;
 
@@ -499,11 +661,17 @@ namespace Pickshop_Finalss
 
         private void AcceptEdit_CLick(object sender, RoutedEventArgs e)
         {
+
             try
             {
-                // Find the product in the database
+                if (selectedAcceptCateg == string.Empty) 
+                { 
+                    MessageBox.Show("Select a Category"); 
+                    return; 
+                }
+                // Find the product in the database using the activeItem ID
                 var productQuery = from p in _dbConn.Products
-                                   where p.Product_Name == acceptName.Text
+                                   where p.Product_ID == activeItem.Itemid
                                    select p;
 
                 var productToUpdate = productQuery.FirstOrDefault();
@@ -512,9 +680,22 @@ namespace Pickshop_Finalss
                 {
                     // Update product details
                     productToUpdate.Product_Name = acceptName.Text;
-                    productToUpdate.PType_ID = acceptCateg.Text;
+                    productToUpdate.PType_ID = selectedAcceptCateg;
                     productToUpdate.Product_Desc = acceptDesc.Text;
-                    productToUpdate.Price = float.Parse(acceptPrice.Text, NumberStyles.Currency, CultureInfo.InvariantCulture);
+
+                    // Remove the peso sign if present
+                    string priceText = acceptPrice.Text.Replace("₱", "").Trim();
+
+                    // Validate and parse the price
+                    if (float.TryParse(priceText, NumberStyles.Any, CultureInfo.InvariantCulture, out float price))
+                    {
+                        productToUpdate.Price = price;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please enter a valid price.");
+                        return;
+                    }
 
                     // Submit changes to the database
                     _dbConn.SubmitChanges();
@@ -523,9 +704,13 @@ namespace Pickshop_Finalss
                     // Refresh the product list
                     _productViewModels.Clear();
                     LoadProductsFromDatabase();
-
+                    EditItemCateg.Text = getCategDesc(selectedAcceptCateg);
+                    EditItemName.Text = acceptName.Text;
+                    EditItemDesc.Text = acceptDesc.Text;
+                    EditItemPrice.Text = acceptPrice.Text;
+                    
                     AcceptEdit.Visibility = Visibility.Collapsed;
-                    listedItems.Visibility = Visibility.Visible;
+                    EditItem.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -544,11 +729,20 @@ namespace Pickshop_Finalss
 
         private void DeclineEdit_CLick(object sender, RoutedEventArgs e)
         { 
-            MessageBox.Show("omg its working!");
+            AcceptEdit.Visibility = Visibility.Collapsed;
+            EditItem.Visibility = Visibility.Visible;
+            acceptName.Text = "";
+            acceptCateg.Text = "";
+            acceptDesc.Text = "";
+            acceptPrice.Text = "";
+
+
         }
 
         private void EditBack_CLick(object sender, RoutedEventArgs e)
         {
+            _productViewModels.Clear();
+            LoadProductsByUserFromDatabase(userid);
             listedItems.Visibility = Visibility.Collapsed;
             itemInfo.Visibility = Visibility.Collapsed;
             EditItem.Visibility = Visibility.Collapsed;

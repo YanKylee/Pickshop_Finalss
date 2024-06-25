@@ -203,7 +203,7 @@
 
         <StackPanel x:Name="SellingItems" Visibility="Collapsed" Orientation="Horizontal" >
             <StackPanel.Background>
-                <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\Selling.png"/>
+                <ImageBrush ImageSource="C:\Users\Kyle\source\repos\Pickshop_Finalss\Pickshop_Finalss\Background\ItemSell1.png"/>
             </StackPanel.Background>
 
             <StackPanel Margin="20 81 0 0" Orientation="Vertical" Width="240" Height="315"  >
@@ -237,15 +237,15 @@
             </StackPanel>
 
             <StackPanel Margin="24 24 0 0" Height="245" Width="400" Orientation="Vertical"  >
-                <ComboBox x:Name="itemCateg" Margin="0 22 28 0" Width="235" Height="30" >
-                    <ComboBoxItem Content="Electronics"/>
-                    <ComboBoxItem Content="Fashion"/>
-                    <ComboBoxItem Content="Home &amp; Garden"/>
-                    <ComboBoxItem Content="Health &amp; Beauty"/>
-                    <ComboBoxItem Content="Sports &amp; Outdoors"/>
-                    <ComboBoxItem Content="Toys &amp; Hobbies"/>
-                    <ComboBoxItem Content="Automotive"/>
-                    <ComboBoxItem Content="Books &amp; Media"/>
+                <ComboBox x:Name="itemCateg" SelectionChanged="itemCateg_SelectionChange" Margin="0 22 28 0" Width="235" Height="30" >
+                    <ComboBoxItem Content="Electronics" Tag="PT_1" />
+                    <ComboBoxItem Content="Fashion" Tag="PT_2"  />
+                    <ComboBoxItem Content="Home &amp; Garden" Tag="PT_3"/>
+                    <ComboBoxItem Content="Health &amp; Beauty" Tag="PT_4" />
+                    <ComboBoxItem Content="Sports &amp; Outdoors" Tag="PT_5" />
+                    <ComboBoxItem Content="Toys &amp; Hobbies" Tag="PT_6" />
+                    <ComboBoxItem Content="Automotive" Tag="PT_7"  />
+                    <ComboBoxItem Content="Books &amp; Media" Tag="PT_8" />
                 </ComboBox>
 
                 <Button x:Name="itemSell" Margin="0 131 8 0" Width="280" Height="55" Click="itemSell_Click" >
@@ -372,9 +372,9 @@
                 </StackPanel>
             </StackPanel>
             </StackPanel>
-                <StackPanel Margin="20 0 0 0" >
+                <StackPanel Margin="10 0 0 0" >
 
-                    <Button Margin="0 80 0 0" BorderBrush="Transparent" Background="Transparent" Width="45" Height="50" Click="Shopping_Click"  >
+                    <Button Margin="0 80 50 0" BorderBrush="Transparent" Background="Transparent" Width="45" Height="50" Click="Shopping_Click"  >
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
@@ -383,7 +383,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="42" Height="40" Click="Selling_Click"  >
+                <Button Margin="0 27 55 0" BorderBrush="Transparent" Background=" white" Width="42" Height="40" Click="Selling_Click"  >
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
@@ -392,7 +392,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="60" Height="44" Click="Profile_Click"  >
+                <Button Margin="0 40 50 0" BorderBrush="Transparent" Background="Transparent" Width="60" Height="44" Click="Profile_Click"  >
                     <Button.Template>
                         <ControlTemplate TargetType="Button">
                             <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
@@ -401,7 +401,7 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                    <Button Margin="0 40 10 0" BorderBrush="Transparent" Background="Transparent" Width="60" Height="44" Click="Logout_Click"  >
+                    <Button Margin="0 40 50 0" BorderBrush="Transparent" Background="Transparent" Width="60" Height="44" Click="Logout_Click"  >
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border CornerRadius="3" Background="Transparent" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
@@ -438,10 +438,10 @@
                         
                     </Border>
 
-                    <TextBlock x:Name="EditItemName" Margin="10 20 0 0" Text="2020" Width="145"  />
-                    <TextBlock x:Name="EditItemCateg" Margin="10 5 0 0" Text="2020" Width="145"  />
-                    <TextBlock x:Name="EditItemDesc" Margin="10 32 0 0" Text="2020" Width="145"  />
-                    <TextBlock x:Name="EditItemPrice" Margin="10 98 0 0" Text="2020" Width="145"  />
+                    <TextBlock x:Name="EditItemName" Margin="10 20 0 0"  Width="145"  />
+                    <TextBlock x:Name="EditItemCateg" Margin="10 5 0 0"  Width="145"  />
+                    <TextBlock x:Name="EditItemDesc" Margin="10 32 0 0"  Width="145"  />
+                    <TextBlock x:Name="EditItemPrice" Margin="10 98 0 0"  Width="145"  />
                 </StackPanel>
                 <StackPanel Margin="25 0 0 0" Width="60"  >
                     <Button Margin="0 4 20 0" Width="40" Height="40" BorderBrush="Transparent" Background="Transparent" BorderThickness="0" Click="DeleteItem_CLick" >
@@ -490,7 +490,16 @@
                     </Border>
 
                     <TextBox x:Name="acceptName" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="4 20 0 0"  Width="145"  />
-                    <TextBox x:Name="acceptCateg" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="4 5 0 0"  Width="145"  />
+                    <ComboBox x:Name="acceptCateg" SelectionChanged="acceptCateg_SelectionChange" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="6 4 0 0"  Width="147" >
+                        <ComboBoxItem Content="Electronics" Tag="PT_1" />
+                        <ComboBoxItem Content="Fashion" Tag="PT_2"  />
+                        <ComboBoxItem Content="Home &amp; Garden" Tag="PT_3"/>
+                        <ComboBoxItem Content="Health &amp; Beauty" Tag="PT_4" />
+                        <ComboBoxItem Content="Sports &amp; Outdoors" Tag="PT_5" />
+                        <ComboBoxItem Content="Toys &amp; Hobbies" Tag="PT_6" />
+                        <ComboBoxItem Content="Automotive" Tag="PT_7"  />
+                        <ComboBoxItem Content="Books &amp; Media" Tag="PT_8" />
+                    </ComboBox>
                     <TextBox x:Name="acceptDesc" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="4 32 0 0"  Width="145" TextWrapping="Wrap" />
                     <TextBox x:Name="acceptPrice" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Margin="4 98 0 0"  Width="145"  />
                 </StackPanel>
